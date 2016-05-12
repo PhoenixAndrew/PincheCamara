@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>pinche camara</name>
+    <name>Practica 3 Camara</name>
     <description>
-        
+        Manejo de parametros de captura de camara
     </description>
-    <author email="camarg07@hotmail.com" href="http://www.itslibres.edu.mx/">
-        el pinche Android
+    <author email="solrac_82_20@hotmail.com" href="http://www.itslibres.edu.mx/">
+        Ing. Carlos Aurelio Hernández M.
     </author>
     <content src="index.html" />
     <preference name="permissions" value="none" />

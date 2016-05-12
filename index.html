@@ -1,47 +1,65 @@
-<!DOCTYPE html PUBLIC "-/W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
-<html xmlns=http://www.w3.org/1999/xhtml">
-    <head>
-
+<!--DOCTYPE HTML-->
+<html>
+<head>
+<meta charset="utf-8">
 <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" type="text/css"/>
 <link rel="stylesheet" href="css/jquery.mobile.theme-1.4.5.min.css" type="text/css"  />
 <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" type="text/css" />
-<script type="text/javascript" src="phonegap.js"></script>
+<script src="cordova.js"></script>
 <script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
 <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js" ></script>
-<meta http-equiv="content-Type" content="text/html; charset=utf-8"/>
-<script type="text/javascript">
-    
-    document.addEventListener("deviceready",function(){
-    $("#btnTomarFoto").tap(function(){
-      //  alert ("ejecucion correcta")
-        navigator.device.capture.captureImage(function (Foto){
-           ruta=Foto[0].fullPath;
-           //coocar la imagen en una etiquta <img>
-           $("#imagen").append('<img src="'+ruta+'" width="100%"/> ').attr('rel',ruta);
-        },function (error){
-            navigator.notification.alert("Error;"+error.code,null,"Captura de Error");
-        },{limit:1});
-    });
-    
-    },false);
-    </script>
-<style type="=text/css">
-    p{
-        text-align: center;
-    }
-</style>
 
-    </head>
-    <body>
-        <div data-role="page" id="Principal" data-theme="b">
-            <div data-role="header">
-                <p>Acceso a Camara</p>
-            </div>
-        <div data-role="content">
-            <input type="button" value="Tomar Foto" id="btnTomarFoto"/>
-            <div id="imagen"></div>    
-        </div>
-            <div data-role="footer" data-position="fixed">
-                <p>Pie de la aplicacion </p>
-            </div>
-    </body>
+<script type="text/javascript" charset="utf-8">
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+            var btnTomarFoto=$("#btnTomarFoto");
+            btnTomarFoto.tap(function (){
+            navigator.device.capture.captureImage(function(mediaFiles){
+		        path = mediaFiles[0].fullPath;
+		        $('#regFoto').append('<br><img id="imagen" src="'+path+'" width="100%" />').attr('rel',path);
+	          },function(error){
+		           navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+	             },{limit:1});
+            });
+
+            var btnSubirArchivo=$("#btnSubirArchivo");
+            btnSubirArchivo.tap(function (){
+	          var rutaIMG=$("#imagen").attr("src");
+	           uploadPhoto(rutaIMG);
+	      });
+        }
+        function uploadPhoto(foto) {
+	var options = new FileUploadOptions();
+	options.fileKey="file";
+	options.fileName=$("#nomImagen").val();
+	options.mimeType="image/jpeg";
+	var params = {};
+	params.value1 = "test";
+	params.value2 = "param";
+	options.params = params;
+	var ft = new FileTransfer();
+	ft.upload(foto,"http://itslmoviles.260mb.net/subirArchivo/upload.php",function(r){
+		navigator.notification.confirm("El archivo: "+r.response,null, "Notificacion");
+	}, function(err){
+		navigator.notification.alert("Error: "+err.code,null, "Error de Envío");
+	}, options);
+}
+        </script>
+</head>
+<body>
+<div data-role="page" id="principal">
+    <div data-role="header" >
+	     <h1>Subir archivo a servidior</h1>
+    </div>
+    <div data-role="content">
+	       <input type="button" id="btnTomarFoto" value="Tomar Foto" >
+	        <div id="regFoto"></div>
+	        <input type="text" id="nomImagen" placeholder="Nombre del servicio">
+	        <input type="button" id="btnSubirArchivo" value="Subir Arcchivo" >
+    </div>
+    <div data-role="footer">
+	     <p>Derechos reservados</p>
+    </div>
+</body>
+</html>
