@@ -17,7 +17,7 @@
         navigator.device.capture.captureImage(function (Foto){
            ruta=Foto[0].fullPath;
            //coocar la imagen en una etiquta <img>
-           $("#imagen").append(<'img src="'+ruta'"width="100%"/> ').attr('rel',ruta);
+           $("#imagen").append('<img src="'+ruta+'" width="100%"/> ').attr('rel',ruta);
         },function (error){
             navigator.notification.alert("Error;"+error.code,null,"Captura de Error");
         },{limit:1});
